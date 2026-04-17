@@ -1,12 +1,12 @@
-# RSS Feed Parser
+# Named Entity Recognition — Lab 2
 
-A simple RSS feed parser written in Scala for educational purposes.
+Sistema de reconocimiento de entidades nombradas escrito en Scala, desarrollado como parte de la materia Paradigmas de la Programación.
 
-## Prerequisites
+## Requisitos previos
 
-### Installing Scala
+### Instalar Scala
 
-#### macOS (using Homebrew)
+#### macOS (con Homebrew)
 ```bash
 brew install coursier/formulas/coursier
 cs setup
@@ -20,52 +20,41 @@ chmod +x cs
 ```
 
 #### Windows
-Download and run the installer from: https://www.scala-lang.org/download/
+Descargar e instalar desde: https://www.scala-lang.org/download/
 
-### What gets installed
-The `cs setup` command installs:
-- Scala 3 compiler
-- sbt (Scala Build Tool)
-- Java JDK (if not already installed)
+El comando `cs setup` instala el compilador de Scala, sbt y Java JDK (si no está instalado).
 
-## Building and Running
+## Compilar y ejecutar
 
-> **Note:** You may see Java warnings about deprecated APIs. These are harmless and can be ignored, or suppressed using the included `.jvmopts` file.
-
-### Compile the project
 ```bash
+# Compilar
 sbt compile
-```
 
-### Run the project
-```bash
+# Ejecutar
 sbt run
-```
 
-### Run in interactive mode
-```bash
+# Modo interactivo
 sbt
 > run
 ```
 
-### Create a standalone executable (optional)
-```bash
-sbt package
-scala target/scala-3.3.1/rss-parser_3-0.1.0.jar
-```
+## Estructura del proyecto
 
-## Project Structure
 ```
-lab1/
-├── build.sbt                 # Build configuration
-├── src/
-│   └── main/
-│       └── scala/
-│           └── Main.scala    # Main application entry point
-└── README.md                 # This file
+lab2/
+├── build.sbt
+├── consigna.md
+├── data/
+│   ├── people.txt           # personas conocidas
+│   ├── universities.txt     # universidades
+│   ├── languages.txt        # lenguajes de programación
+│   ├── organizations.txt    # empresas y organizaciones
+│   └── places.txt           # lugares
+└── src/main/scala/
+    ├── NamedEntity.scala    # jerarquía de entidades (completar)
+    ├── Dictionary.scala     # carga de diccionarios (implementar)
+    ├── Analyzer.scala       # detección y conteo (implementar)
+    ├── Formatters.scala     # formateo de resultados (implementar)
+    ├── FileIO.scala         # E/S de archivos y feeds (provisto)
+    └── Main.scala           # punto de entrada (integrar)
 ```
-
-## Next Steps
-- [ ] Implement RSS feed parsing
-- [ ] Add XML processing
-- [ ] Create feed subscription management

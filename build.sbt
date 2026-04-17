@@ -1,4 +1,4 @@
-name := "rss-parser"
+name := "ner-oo"
 
 version := "0.1.0"
 
