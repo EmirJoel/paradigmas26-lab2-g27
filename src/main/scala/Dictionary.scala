@@ -26,30 +26,36 @@ object Dictionary {
    * @param filePath   ruta al archivo de diccionario (ej: "data/people.txt")
    * @param entityType tipo de entidad: "Person", "University", "ProgrammingLanguage", etc.
    * @return lista de NamedEntity del tipo correspondiente
-   *
-   * TODO (Ejercicio 2): Implementar este método.
-   *
-   *   Pasos sugeridos:
-   *     1. Leer las líneas del archivo
-   *     2. Para cada línea, crear la instancia de la clase correcta
-   *     3. Retornar la lista de entidades creadas
-   *
-   *   Para crear la clase correcta según el tipo se puede usar match:
-   *
    */
   def loadFromFile(filePath: String, entityType: String): List[NamedEntity] = {
-    ???
+    val lines = FileIO.readLines(filePath)
+    entityType match {
+      case "Person" => lines.map(new Person(_))
+      case "Organization" => lines.map(new Organization(_))
+      case "University" => lines.map(new University(_))
+      case "Place" => lines.map(new Place(_))
+      case "Technology" => lines.map(new Technology(_))
+      case "ProgrammingLanguage" => lines.map(new ProgrammingLanguage(_))
+      case _ => throw new IllegalArgumentException(s"Tipo de entidad desconocido: $entityType")
+    }
   }
 
   /**
    * Carga todos los diccionarios disponibles y combina sus entidades.
    *
    * @return lista con todas las entidades de todos los diccionarios
-   *
-   * TODO (Ejercicio 2): Implementar este método.
-   *
    */
   def loadAll(): List[NamedEntity] = {
-    ???
+    val config = List(
+    ("data/people.txt", "Person"),
+    ("data/universities.txt", "University"),
+    ("data/languages.txt", "ProgrammingLanguage"),
+    ("data/organizations.txt", "Organization"),
+    ("data/places.txt", "Place")
+    )
+
+    config.flatMap{case (path, entityType) =>
+      loadFromFile(path, entityType)
+    }
   }
 }
