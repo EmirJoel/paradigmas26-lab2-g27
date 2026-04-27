@@ -44,11 +44,18 @@ object Dictionary {
    * Carga todos los diccionarios disponibles y combina sus entidades.
    *
    * @return lista con todas las entidades de todos los diccionarios
-   *
-   * TODO (Ejercicio 2): Implementar este método.
-   *
    */
   def loadAll(): List[NamedEntity] = {
-    ???
+    val config = List(
+    ("data/people.txt", "Person"),
+    ("data/universities.txt", "University"),
+    ("data/languages.txt", "ProgrammingLanguage"),
+    ("data/organizations.txt", "Organization"),
+    ("data/places.txt", "Place")
+    )
+
+    config.flatMap{case (path, entityType) =>
+      loadFromFile(path, entityType)
+    }
   }
 }
