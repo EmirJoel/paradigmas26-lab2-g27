@@ -31,6 +31,8 @@ object Formatters {
    *   Si no se detectaron entidades, mostrar un mensaje indicándolo.
    */
   def formatNERResult(postTitle: String, entities: List[NamedEntity]): String = {
+  // Si la lista de entidades es vacia devolvemos que no se detectan entidades
+  // Sino imprimos el titulo del post y luego cada entidad le vamos haciendo un describe y al final las unimos en un string con saltos de linea
     if (entities.isEmpty) {
       s"Post: $postTitle\n  (sin entidades detectadas)"
     } else {
@@ -57,6 +59,7 @@ object Formatters {
    *     University: 2
    */
   def formatEntityStats(counts: Map[String, Int]): String = {
+    //Pasamos a counts de un mapa a una lista y formateamos el conteo de entidades por tipo, ordenado de mayor a menor.
     s" === Estadísticas de entidades ===\n" + counts.toList.sortBy(-_._2).map{ case (entity , int)=> s"${entity}:${int}"}.mkString("\n")
   }
 }
