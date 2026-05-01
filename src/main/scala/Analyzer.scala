@@ -41,6 +41,7 @@ object Analyzer {
    *                 )
    */
   def countByType(entities: List[NamedEntity]): Map[String, Int] = {
-    ???
-  }
+    //Tomando la lista de entidades las agrupamos en un diccionario a traves de grounBy y de alli tomamos la longitud  de list para saber cuantas entidades tienen ese entityType
+    entities.groupBy(entity => entity.entityType).map { case (entity, list) => (entity, list.size)}
+  } 
 }
