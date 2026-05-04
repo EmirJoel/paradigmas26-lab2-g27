@@ -5,41 +5,35 @@
 object Main {
   def main(args: Array[String]): Unit = {
 
-    // ------------------------------------------------------------------
-    // Paso 1: Cargar diccionarios
-    // ------------------------------------------------------------------
-    // TODO (Ejercicio 2)
-    val dictionary: List[NamedEntity] = ???
+    // Leer diccionario
+    val dictionary: List[NamedEntity] = Dictionary.loadAll()
 
     println(s"Diccionario cargado: ${dictionary.size} entidades.\n")
 
-    // ------------------------------------------------------------------
-    // Paso 2: Descargar posts
-    // ------------------------------------------------------------------
+    // Leer subscripciones
     val subscriptions = FileIO.readSubscriptions()
 
     val allPosts: List[(String, List[String])] = subscriptions.map { url =>
       println(s"Descargando posts de: $url")
-      val json   = FileIO.downloadFeed(url)
+      val json = FileIO.downloadFeed(url)
       val titles = FileIO.extractPostTitles(json)
       (url, titles)
     }
 
-    // ------------------------------------------------------------------
-    // Paso 3: Detectar entidades y mostrar resultados por post
-    // ------------------------------------------------------------------
-    // TODO (Ejercicios 3, 4 y 6):
-    //   Para cada post:
-    //     1. Detectar entidades
-    //     2. Formatear y mostrar el resultado
-
-    // ------------------------------------------------------------------
-    // Paso 4: Estadísticas globales
-    // ------------------------------------------------------------------
-    // TODO (Ejercicios 5 y 6):
-    //   1. Recolectar TODAS las entidades detectadas en todos los posts
-    //   2. Contar por tipo
-    //   3. Mostrar el resumen
-
+    // Detecto entidades y muestro resultados por post
+    allPosts.foreach { case (url, titles) =>
+      titles.foreach { titulo =>
+        val entidades = Analyzer.detectEntities(titulo, dictionary)
+        println(Formatters.formatNERResult(titulo, entidades))
+      }
+    }
+    // Armo una lista de todas las entidades para contarlas segun su tipo
+    val listaEntidades = allPosts.flatMap { case (url, titles) =>
+      titles.flatMap { titulo =>
+        Analyzer.detectEntities(titulo, dictionary)
+      }
+    }
+    val cuenta = Analyzer.countByType(listaEntidades)
+    println(s"${Formatters.formatEntityStats(cuenta)}\n")
   }
 }
