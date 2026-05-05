@@ -20,17 +20,12 @@ object Main {
       (url, titles)
     }
 
-    // Detecto entidades y muestro resultados por post
-    allPosts.foreach { case (url, titles) =>
-      titles.foreach { titulo =>
-        val entidades = Analyzer.detectEntities(titulo, dictionary)
-        println(Formatters.formatNERResult(titulo, entidades))
-      }
-    }
-    // Armo una lista de todas las entidades para contarlas segun su tipo
+    // Detecto entidades una sola vez, las muestro y las guardo
     val listaEntidades = allPosts.flatMap { case (url, titles) =>
       titles.flatMap { titulo =>
-        Analyzer.detectEntities(titulo, dictionary)
+        val entidades = Analyzer.detectEntities(titulo, dictionary)
+        println(Formatters.formatNERResult(titulo, entidades))
+        entidades
       }
     }
     val cuenta = Analyzer.countByType(listaEntidades)
