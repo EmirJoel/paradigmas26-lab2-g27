@@ -17,6 +17,7 @@ object Main {
       println(s"Descargando posts de: $url")
       val json = FileIO.downloadFeed(url)
       val titles = FileIO.extractPostTitles(json)
+      println()
       (url, titles)
     }
 
@@ -25,6 +26,7 @@ object Main {
       titles.flatMap { titulo =>
         val entidades = Analyzer.detectEntities(titulo, dictionary)
         println(Formatters.formatNERResult(titulo, entidades))
+        println()
         entidades
       }
     }
