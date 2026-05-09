@@ -16,7 +16,14 @@ object Analyzer {
    * @return lista de entidades cuyo texto aparece en el texto analizado
    */
   def detectEntities(text: String, dictionary: List[NamedEntity]): List[NamedEntity] = {
-    dictionary.filter(entity => text.contains(entity.text)).distinct
+    // Normalizamos el texto: minúsculas y cambiamos puntuación por espacios
+    val normalizedText = s" ${text.toLowerCase.replaceAll("[^a-z0-9+]+", " ")} "
+
+    dictionary.filter { ent =>
+      // Normalizamos la entidad igual que el texto
+      val normalizedEntity = s" ${ent.text.toLowerCase.replaceAll("[^a-z0-9+]+", " ")} "
+      normalizedText.contains(normalizedEntity)
+    }.distinct // distinct para evitar contar la misma entidad varias veces si aparece repetida 
   }
 
   /**
@@ -24,21 +31,6 @@ object Analyzer {
    *
    * @param entities lista de entidades detectadas
    * @return mapa de entityType → cantidad de apariciones
-   *
-   * TODO (Ejercicio 5): Implementar este método.
-   *
-   *   Ejemplo:
-   *     entities = List(
-   *                  Person("Alan Turing"),
-   *                  ProgrammingLanguage("Scala"),
-   *                  Person("Ada Lovelace"),
-   *                  University("MIT")
-   *                )
-   *     resultado = Map(
-   *                   "Person"              -> 2,
-   *                   "ProgrammingLanguage" -> 1,
-   *                   "University"          -> 1
-   *                 )
    */
   def countByType(entities: List[NamedEntity]): Map[String, Int] = {
     //Tomando la lista de entidades las agrupamos en un diccionario a traves de grounBy y de alli tomamos la longitud  de list para saber cuantas entidades tienen ese entityType
