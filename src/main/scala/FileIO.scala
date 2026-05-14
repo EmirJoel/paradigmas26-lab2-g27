@@ -8,16 +8,24 @@ import org.json4s.jackson.JsonMethods._
  *
  * Este objeto no necesita ser modificado para completar los ejercicios.
  */
+
+case class Subscription(name: String, url: String)
+
 object FileIO {
 
   implicit val formats: DefaultFormats.type = DefaultFormats
 
   /** Retorna las URLs de los subreddits a analizar. */
   def readSubscriptions(): List[String] = {
-    List(
-      "https://www.reddit.com/r/scala/.json?count=10",
-      "https://www.reddit.com/r/learnprogramming/.json?count=10"
-    )
+    val source = Source.fromFile("subscriptions.json")
+    val json = try {
+      source.mkString
+    } finally {
+      source.close()
+    }
+    val parsed = parse(json)
+
+    parsed.extract[List[Subscription]].map(_.url)
   }
 
   /** Descarga el contenido de una URL y lo retorna como String. */
